@@ -1,0 +1,41 @@
+i; init; init_m; n_file="/home/docker/data/input/NAMES.RDS"; patient = "HEALTHY"
+g; TeE ; runif; n=1 ; min = 0; max = .1
+g; TrE ; runif; n=1 ; min = 0; max = .01
+g; Tr2 ; runif; n=1 ; min = 0; max = .01
+g; Te2 ; runif; n=1 ; min = 0; max = .1
+g; TekODC ; runif; n=1 ; min = 0; max = .1
+g; TrkTe ; runif; n=1 ; min = 0; max = .1
+g; TekA ; runif; n=1 ; min = 0; max = .1
+g; Pass_BBB_treg; Pass_BBB; type = "treg"
+g; Pass_BBB_teff; Pass_BBB; type = "teff"
+g; cA; runif; n=1 ; min = 20; max = 35
+g; CIL10; runif; n=1 ; min = 10; max = 50
+g; Cinf; runif; n=1 ; min = 10; max = 50
+g; NK2; 0.6
+g; SecondInjectionTime; 1608
+p; NKkillsTeff_out ; runif; n=1 ; min = 0; max = .5
+p; NK_prod_IFNg; INFg_production_NK; analysis = "sensitivity"
+p; NK_prod_IL10; IL10_production_NK; analysis = "sensitivity"
+p; Treg_prod_IL10; IL10_production;  patient = "HEALTHY"
+p; Treg_prod_IL10_in; IL10_production;   patient = "HEALTHY"
+p; Teff_prod_IL17; IL17_production;   patient = "HEALTHY"
+p; Teff_prod_IFNg; INFg_production;  patient = "HEALTHY"
+p; Teff_prod_IFNg_in; INFg_production;   patient = "HEALTHY"
+p; Teff_prod_IL17_in; IL17_production;   patient = "HEALTHY"
+p; IL17_BBB; runif; n=1 ; min = 0; max = .1
+p; IL10_BBB; runif; n=1 ; min = 0; max = .1
+p; Remyelinization_l_le2 ; Remyelinization; analysis = "sensitivity"
+p; Remyelinization_l_le3 ; Remyelinization; analysis = "sensitivity"
+p; Remyelinization_l_le4 ; Remyelinization; analysis = "sensitivity"
+p; IL10Consuption_out; IL10Consuption; analysis = "sensitivity"
+p; IL10Consuption_in; IL10Consuption; analysis = "sensitivity"
+p; IL17Consuption_out; IL17Consuption; analysis = "sensitivity"
+p; IL17Consuption_in; IL17Consuption; analysis = "sensitivity"
+p; INFgConsuption_out; INFgConsuption; analysis = "sensitivity"
+p; INFgConsuption_in; INFgConsuption; analysis = "sensitivity"
+p; DACkillTreg; 0
+p; DACkillTeff; 0
+p; DACDegradation ; 0.0006944
+g; NKentry; 0.2666667
+p; FromTimoEFF; 0.2963841
+p; FromTimoREG; 0.3174603

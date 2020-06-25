@@ -7,7 +7,7 @@ events<-InjectionSetting.generation(InjATime=c(2)*24 , numberA = 100)
 
 parmNames<-c('TeE','TrE','Tr2','Te2','TekODC','TrkTe','TekA','Pass_BBB_treg','Pass_BBB_teff','cA','CIL10','Cinf','NKkillsTeff_out','NK_prod_IFNg',
              'NK_prod_IL10','IL17_BBB','IL10_BBB','Remyelinization_l_le2','IL10Consuption_in','IL17Consuption_in','INFgConsuption_in')
-init <- unlist(read.csv("~/paramHealthy.csv", sep=""))
+init <- unlist(read.csv("./paramHealthy.csv", sep=""))
 names(init)<-parmNames
 
 # init["TeE"] <- 0.015
@@ -47,7 +47,7 @@ system(paste('mv',
 
 source('./R_func/Plot_modelAnalysis.R')
 
-init <- unlist(read.csv("~/paramMS.csv", sep=""))
+init <- unlist(read.csv("./paramMS.csv", sep=""))
 names(init)<-parmNames
 
  init["TeE"] <- 0.0175

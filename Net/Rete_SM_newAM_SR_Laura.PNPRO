@@ -431,6 +431,8 @@
       <arc head="NKentry" kind="INPUT" tail="NK_out">
         <point x="101.0" y="38.0"/>
       </arc>
+      <arc head="DAC" kind="OUTPUT" tail="DACkillTeff"/>
+      <arc head="DAC" kind="OUTPUT" tail="DACkillTreg"/>
     </edges>
   </gspn>
   <gspn name="PetriNetNew" view-rates="false" zoom="75">

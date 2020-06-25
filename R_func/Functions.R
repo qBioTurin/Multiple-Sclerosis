@@ -285,9 +285,12 @@ IL10_BBB<- function(x, patient = "HEALTHY")
   return(matrix(p, ncol = 1))
 }
 
-DACkill<- function(x, therapy)
+DACkill<- function(x, therapy, r = NULL)
 {
-  if(therapy)  p = runif(1, min= 0.001, max=0.1)
+  if(therapy){
+    if( is.null(r)) p = x[10]
+    else p = r
+  }  
   else p = 1e-7
   
   return(matrix(p, ncol = 1))

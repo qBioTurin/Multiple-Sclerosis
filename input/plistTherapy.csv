@@ -35,5 +35,5 @@ g; DACkill; DACkill; therapy = TRUE
 p; DACDegradation ; 0.0007220283
 p; FromTimoEFF; 0.2963841
 p; FromTimoREG; 0.3174603
-p; NK2; 0.0416
+p; NKdup; 0.0416
 g; SecondInjectionTime; 1608

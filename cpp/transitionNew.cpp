@@ -190,7 +190,7 @@ double TregDup(double *Value,  map <string,int>& NumTrans,  map <string,int>& Nu
 
   rate =  Tr2 * Treg ;
 
-  if(rate == 0.0 ) rate = 0.0000001;
+  if(rate <= 0.0 ) rate =  0.000000000001;
   //cout << "Time: " << time << " ; rate: " << rate << "; transition: " << NameTrans[T] <<"\n"<< endl;
   return rate;
 
@@ -216,7 +216,7 @@ double TeffDup(double *Value,  map <string,int>& NumTrans,  map <string,int>& Nu
 
  rate = Te2 * Teff;
 
- if( p*rate == 0.0 ) rate = 0.0000001;
+ if( p*rate <= 0.0 ) rate =  0.000000000001;
  return p*rate;
 
 }
@@ -229,7 +229,7 @@ double NKBorn(double *Value,  map <string,int>& NumTrans,  map <string,int>& Num
 
 	if( NK < 30) rate = NKentry * (30 - NK);
 	
-    if(rate == 0.0 ) rate = 0.0000001;
+    if(rate <= 0.0 ) rate =  0.000000000001;
 	//cout << "Time: " << time << " ; rate: " << rate << "; transition: " << NameTrans[T] <<"\n"<< endl;
 	return rate;
 }
@@ -278,7 +278,7 @@ double TeffActivation(double *Value,  map <string,int>& NumTrans,  map <string,i
  //   rate = TeE * ( 1 - exp(-A/cA))* (0.5 + exp(-INFg/Cinf) ) * RestingTeff ;
  rate = TeE * RestingTeff * A * (0.5 + exp(-INFg/Cinf) ) ;
  
- if(rate == 0.0 ) rate = 0.0000001;
+ if(rate <= 0.0 ) rate =  0.000000000001;
 //cout<< "T: " <<  NameTrans[T] << "; RestingTeff: " << RestingTeff<<"; A: " << A << "; infg: "<< (0.5 + exp(-INFg/Cinf) ) << "; TeE: "<<TeE<<"\n"<<endl;
 //cout << "Time: " << time << " ; rate: " << rate << "; transition: " << NameTrans[T] <<"\n"<< endl;
   return rate;
@@ -314,7 +314,7 @@ double TregActivation(double *Value,  map <string,int>& NumTrans,  map <string,i
  // rate = TrE *RestingTreg * Teff * exp(-A/cA)  ;
   rate = TrE *RestingTreg * Teff;
   
-  if(rate == 0.0 ) rate = 0.0000001;
+  if(rate <= 0.0 ) rate =  0.000000000001;
   //cout <<  NameTrans[T] << ": RestingTreg " << RestingTreg <<"; Teff " << Teff <<"; exp(-A/cA) " << exp(-A/cA) <<"\n"<< endl;
   return rate;
 }
@@ -347,7 +347,7 @@ double MemActivation(double *Value,  map <string,int>& NumTrans,  map <string,in
 
   rate = MemE * Mem  * A * (0.5 + exp(-INFg/Cinf) ) ;
 
-  if(rate == 0.0 ) rate = 0.0000001;
+  if(rate <= 0.0 ) rate =  0.000000000001;
   
   return rate;
 }
@@ -398,7 +398,7 @@ double Killing(double *Value, map <string,int>& NumTrans, map <string,int>& NumP
   
   double frate = rate * intensity;
   
-  if(frate < 0.0000001 ) frate = 0.0000001;
+  if(frate <=  0.0 ) frate =  0.000000000001;
 
   //cout << "Time: " << time << " ; rate: " << frate << "; transition: " << NameTrans[T] <<"\n"<< endl;
   return frate;
@@ -436,7 +436,7 @@ double KillingODC(double *Value, map <string,int>& NumTrans, map <string,int>& N
   
   double frate = rate * intensity;
   
-  if(frate < 0.0000001 ) frate = 0.0000001;
+  if(frate <=  0.0 ) frate =  0.000000000001;
 
   //cout << "Time: " << time << " ; rate: " << frate  << "; transition: " << NameTrans[T] <<"\n"<< endl;
   return frate;
@@ -466,9 +466,10 @@ double DACKill(double *Value, map <string,int>& NumTrans, map <string,int>& NumP
   
   double frate = rate * intensity;
   
-  if(frate < 0.0000001 ) frate = 0.0000001;
+  if(frate <= 0.0 ) frate = 0.000000000001;
 
   //cout << "Time: " << time << " ; rate: " << frate  << "; transition: " << NameTrans[T] <<"\n"<< endl;
+  //cout << "Tcell: " << Tcell  << "; intensity: " << intensity << " ; rate: " << rate  << "\n"<< endl;
   return frate;
 }
 

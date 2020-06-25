@@ -1,22 +1,35 @@
 library(ggplot2)
 library(cowplot)
 
-param <- readRDS("./Therapy_MS_model_analysis/params_Rete_SM_newAM_SR_Laura-analysys.RDS")
-filesAll <- list.files('./Therapy_MS_model_analysis/',pattern='*.trace')
+dirs<- list.dirs()
+folders <- grep("Therapy_*", dirs, value = TRUE)
 
-traceAll <- lapply(filesAll, function(x) {
+traceAll =  lapply( folders, function(i)
+{
+  p <- readRDS(paste0("./",i,"/params_Rete_SM_newAM_SR_Laura-analysys.RDS") )
+  filesAll <- list.files(paste0("./",i,"/"),pattern='*.trace')
+ 
+  traceAll <- lapply(filesAll, function(x,param=p) {
   IDsim<- as.numeric(gsub(pattern="(.trace)", gsub(pattern="([[:graph:]]+(-){1})", x=x, replacement=""), replacement="") )
-  
-  rate <- param$config[[34]][[IDsim]][[3]]
-  data.frame(read.csv(paste0('./Therapy_MS_model_analysis/',x), sep="") ,ID=paste(rate) )
-} )
+    rate <- param$ini_v[10]
+    param$event.list[[length(param$event.list)]][[2]]["DAC"] -> qDAC
+    
+    data.frame(read.csv(paste0('./',i,'/',x), sep="") ,ID= paste("rate",rate,"; DAC",qDAC ) )
+  } )
+  trace<-do.call("rbind", traceAll)
+})
 
 trace<-do.call("rbind", traceAll)
+
 
 time <- unique(trace$Time)
 nsim <- unique(table(trace$Time))
 
 trace$SimID = rep(1:nsim,each = length(time))
+
+#(unique(trace$ID) )-> DACKill
+
+#trace = trace[which(trace$ID %in% c(min(DACKill),max(DACKill))),]
 
 Entities = c("Teff_out","Treg_out","Antigen" ,
              "EffectorMemory","NK_out","BBB",
@@ -53,9 +66,9 @@ lbPlot <- dataCreation(lb)
 MeanArea<-data.frame(mean=MeanPlot,ub=ubPlot$Value,lb=lbPlot$Value)
 
 
-ggplot(MeanArea,aes(x=mean.Time/24))+
-  geom_ribbon(aes(ymin=lb,ymax=ub,fill=mean.ID),color="grey70",alpha=0.2)+
-  geom_line(aes(y=mean.Value ,color= mean.ID))+
+pl=ggplot(MeanArea,aes(x=mean.Time/24))+
+  geom_ribbon(aes(ymin=lb,ymax=ub,fill=as.factor(mean.ID) ),color="grey70",alpha=0.2)+
+  geom_line(aes(y=mean.Value ,color= as.factor(mean.ID) ))+
   facet_wrap(~ mean.Entity,scales = "free",ncol = 3)+
   theme(axis.text=element_text(size = 15, hjust = 0.5),
         axis.text.x=element_text(angle=+90,vjust=0.5, hjust=1),
@@ -71,4 +84,8 @@ ggplot(MeanArea,aes(x=mean.Time/24))+
         panel.background = element_rect(colour = NA),
         plot.background = element_rect(colour = NA),
         plot.margin=unit(c(0,5,5,5),"mm") )
+
+pl
+
+ggsave(pl,filename = paste0("Plot/DiffTherapy.pdf"),device = "pdf",width = 16, height = 20 )
 

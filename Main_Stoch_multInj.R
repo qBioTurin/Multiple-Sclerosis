@@ -8,7 +8,7 @@ events<-InjectionSetting.generation(InjATime=c(2,67,127,295,300,303,307,600)*24 
 
 parmNames<-c('TeE','TrE','Tr2','Te2','TekODC','TrkTe','TekA','Pass_BBB_treg','Pass_BBB_teff','cA','CIL10','Cinf','NKkillsTeff_out','NK_prod_IFNg',
              'NK_prod_IL10','IL17_BBB','IL10_BBB','Remyelinization_l_le2','IL10Consuption_in','IL17Consuption_in','INFgConsuption_in')
-init <- unlist(read.csv("~/paramHealthy.csv", sep=""))
+init <- unlist(read.csv("./paramHealthy.csv", sep=""))
 names(init)<-parmNames
 
 
@@ -40,8 +40,8 @@ model_analysis(solver_fname = "Net/Rete_SM_newAM_SR_Laura.solver",
                functions_fname = "R_func/Functions.R",
                ini_v = init,
                event.list = events,
-               n_run = 500,
-               solver_type = "SSA",
+               #n_run = 500,
+               #solver_type = "SSA",
                #solver_type = "TAUG",taueps = .1,
                parallel_processors = 20)
 
@@ -58,6 +58,8 @@ source('./R_func/Plot_StochAnalysis.R')
 ##########  DAC injections
 ##########################
 
+events<-InjectionSetting.generation(InjATime=c(2,67,127,295,300,303,307,600)*24 , numberA = 100, numberDAC = 30, InjDACTime = (6:23)*30*24 )
+
 init <- unlist(read.csv("./paramMS.csv", sep=""))
 names(init)<-parmNames
 
@@ -68,16 +70,50 @@ model_analysis(solver_fname = "Net/Rete_SM_newAM_SR_Laura.solver",
                functions_fname = "R_func/Functions.R",
                ini_v = init,
                event.list = events, # se lo attivi al secondo giorno fa l'iniezione
-               n_run = 100,
-               n_config = 5,
-               solver_type = "SSA",
+               n_config = 10,
+               #solver_type = "SSA",
                #taueps = .1,
                parallel_processors = 20)
 
-if(file.exists("Therapy_MS_model_analysis")) system(paste('rm -dr', sprintf("Therapy_MS_model_analysis")) )
+if(file.exists("Therapy1_MS_model_analysis")) system(paste('rm -dr', sprintf("Therapy1_MS_model_analysis")) )
 system(paste('mv',
              sprintf("results_model_analysis"),
-             sprintf("Therapy_MS_model_analysis")) )
+             sprintf("Therapy1_MS_model_analysis")) )
+
+model_analysis(solver_fname = "Net/Rete_SM_newAM_SR_Laura.solver",
+               f_time = 24*30*24,
+               s_time = 24,
+               parameters_fname = "input/plistTherapy01.csv",
+               functions_fname = "R_func/Functions.R",
+               ini_v = init,
+               event.list = events, # se lo attivi al secondo giorno fa l'iniezione
+               #n_run = 500,
+               #solver_type = "SSA",
+               #taueps = .1,
+               parallel_processors = 20)
+
+if(file.exists("Therapy01_MS_model_analysis")) system(paste('rm -dr', sprintf("Therapy01_MS_model_analysis")) )
+system(paste('mv',
+             sprintf("results_model_analysis"),
+             sprintf("Therapy01_MS_model_analysis")) )
+
+model_analysis(solver_fname = "Net/Rete_SM_newAM_SR_Laura.solver",
+               f_time = 24*30*24,
+               s_time = 24,
+               parameters_fname = "input/plistTherapy001.csv",
+               functions_fname = "R_func/Functions.R",
+               ini_v = init,
+               event.list = events, # se lo attivi al secondo giorno fa l'iniezione
+               #n_run = 500,
+               #solver_type = "SSA",
+               #taueps = .1,
+               parallel_processors = 20)
+
+if(file.exists("Therapy001_MS_model_analysis")) system(paste('rm -dr', sprintf("Therapy001_MS_model_analysis")) )
+system(paste('mv',
+             sprintf("results_model_analysis"),
+             sprintf("Therapy001_MS_model_analysis")) )
+
 
 source("R_func/Plot_DiffTherapy.R")
 

@@ -1,4 +1,4 @@
-Names <- read_table2("Net/Rete_SM_newAM_SR_Laura.PlaceTransition")
+Names <- read_table2("Net/MS_Model.PlaceTransition")
 
 transStart<- which(Names[,1] == "#TRANSITION")
 

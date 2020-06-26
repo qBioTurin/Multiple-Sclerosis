@@ -4,18 +4,18 @@ library(ggthemes)
 
 if(Multy)
 {
-  traceH <-data.frame(read.csv('./Mult_Healthy_Stoch_analysis/Rete_SM_newAM_SR_Laura-analysys-1.trace', sep=""), patient = "Healthy")
+  traceH <-data.frame(read.csv('./Mult_Healthy_Stoch_analysis/MS_Model-analysys-1.trace', sep=""), patient = "Healthy")
   if(file.exists("Mult_MS_Stoch_analysis"))
   {
-    traceS <-data.frame(read.csv('./Mult_MS_Stoch_analysis/Rete_SM_newAM_SR_Laura-analysys-1.trace', sep=""), patient = "MS")
+    traceS <-data.frame(read.csv('./Mult_MS_Stoch_analysis/MS_Model-analysys-1.trace', sep=""), patient = "MS")
     trace <-rbind(traceH,traceS)
   }else{trace <- traceH}
   
 }else{
-  traceH <-data.frame(read.csv('./Healthy_Stoch_analysis/Rete_SM_newAM_SR_Laura-analysys-1.trace', sep=""), patient = "Healthy")
+  traceH <-data.frame(read.csv('./Healthy_Stoch_analysis/MS_Model-analysys-1.trace', sep=""), patient = "Healthy")
   if(file.exists("MS_Stoch_analysis"))
   {
-    traceS <-data.frame(read.csv('./MS_Stoch_analysis/Rete_SM_newAM_SR_Laura-analysys-1.trace', sep=""), patient = "MS")
+    traceS <-data.frame(read.csv('./MS_Stoch_analysis/MS_Model-analysys-1.trace', sep=""), patient = "MS")
     trace <-rbind(traceH,traceS)
   }else{trace <- traceH}
   
@@ -31,9 +31,9 @@ MeanData <-aggregate(trace[, -which(colnames(trace) %in% c("Time","Id","patient"
 
 Entities = c("Teff_out","Treg_out","Antigen" ,
              "EffectorMemory","NK_out","BBB",
-             "IL10_out","IL17_out","INFg_out", 
+             "IL10_out","IL17_out","IFNg_out", 
              "Treg_in", "Teff_in","ODC_le1" ,
-             "IL17_in","INFg_in","IL10_in")
+             "IL17_in","IFNg_in","IL10_in")
 
 refH <- data.frame(Entity = Entities, ref = c(50,13,NaN,NaN,NaN,NaN , 13,8,42, 1,1,NaN,0.7,0.6,1), ID = "Healthy"  )
 refS <- data.frame(Entity = Entities, ref = c(142,3,NaN,NaN,NaN,NaN , 3,25,117,1.1, 15, NaN,2,13,0), ID = "MS" )
@@ -92,7 +92,7 @@ ggsave(pl,filename = paste0("Plot/",plotnames,".png"),device = "png",width = 8, 
 DataExcel <- read_table2("input/DataExcel.csv")
 
 ref <-lapply(2:(length(DataExcel[1,])), function(i){
-  if(names(DataExcel[,i]) %in% c("INFg_out", "IL17_out" ,"IL10_out", "Teff_out","Treg_out") ) t = 2+18/24
+  if(names(DataExcel[,i]) %in% c("IFNg_out", "IL17_out" ,"IL10_out", "Teff_out","Treg_out") ) t = 2+18/24
       else t = 4+18/24
   a<- data.frame(DataExcel[,c(1,i)], Entity = names(DataExcel[,i]), time = t )
   colnames(a) <- c("ID", "ref" ,"Entity","Time")

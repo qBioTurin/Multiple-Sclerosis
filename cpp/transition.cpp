@@ -420,9 +420,9 @@ double KillingODC(double *Value, map <string,int>& NumTrans, map <string,int>& N
 
   idx = InputPlacesOrderedAlphabetically(trans_InputPlaces_ordered, NumPlaces, Trans, T, NumTrans );
 
-  int idxIL10 = idx.at(0);
-  int idxIL17 = idx.at(1);
-  int idxIFNg = idx.at(2);
+  int idxIFNg = idx.at(0);
+  int idxIL10 = idx.at(1);
+  int idxIL17 = idx.at(2);
   int idxODC = idx.at(3);
   int idxTeff = idx.at(4);
 
@@ -430,7 +430,7 @@ double KillingODC(double *Value, map <string,int>& NumTrans, map <string,int>& N
   
   double p = 0.0;
   
-  if( dem > 1 ) p = 0.5 * (Value[idxIL17]  + Value[idxIFNg] - Value[idxIL10]) /( dem ) ;
+  if( dem >= 1 ) p = 0.5 * (Value[idxIL17]  + Value[idxIFNg] - Value[idxIL10]) /( dem ) ;
 
   intensity = Value[idxODC] * Value[idxTeff] * (1+p);
   
@@ -439,6 +439,8 @@ double KillingODC(double *Value, map <string,int>& NumTrans, map <string,int>& N
   if(frate <=  0.0 ) frate =  0.000000000001;
 
   //cout << "Time: " << time << " ; rate: " << frate  << "; transition: " << NameTrans[T] <<"\n"<< endl;
+  //cout << "   Value[idxIL17] : " <<  Value[idxIL17] << " ; Value[idxIFNg]: " << Value[idxIFNg]  << "; Value[idxIL10]: " << Value[idxIL10] <<"\n"<< endl;
+  //cout << "   p: " <<  p << " ; intensity: " << intensity  << "; rate: " << rate <<"\n"<< endl;
   return frate;
 }
 

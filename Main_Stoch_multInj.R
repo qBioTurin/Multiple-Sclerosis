@@ -12,7 +12,7 @@ init <- unlist(read.csv("./paramHealthy.csv", sep=""))
 names(init)<-parmNames
 
 
-model_analysis(solver_fname = "Net/Rete_SM_newAM_SR_Laura.solver",
+model_analysis(solver_fname = "Net/MS_Model.solver",
                f_time = 24*30*24,
                s_time = 24,
                parameters_fname = "input/plistCalib.csv",
@@ -30,18 +30,18 @@ system(paste('mv',
              sprintf("Mult_Healthy_Stoch_analysis")) )
 
 
-init <- unlist(read.csv("~/paramMS.csv", sep=""))
+init <- unlist(read.csv("./paramMS.csv", sep=""))
 names(init)<-parmNames
 
-model_analysis(solver_fname = "Net/Rete_SM_newAM_SR_Laura.solver",
+model_analysis(solver_fname = "Net/MS_Model.solver",
                f_time = 24*30*24,
                s_time = 24,
                parameters_fname = "input/plistCalib.csv",
                functions_fname = "R_func/Functions.R",
                ini_v = init,
                event.list = events,
-               #n_run = 500,
-               #solver_type = "SSA",
+               n_run = 500,
+               solver_type = "SSA",
                #solver_type = "TAUG",taueps = .1,
                parallel_processors = 20)
 
@@ -53,6 +53,9 @@ system(paste('mv',
 plotnames <- "MultStochDynamics"
 Multy = T
 source('./R_func/Plot_StochAnalysis.R')
+
+
+
 
 ##########################
 ##########  DAC injections

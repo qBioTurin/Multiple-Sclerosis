@@ -61,6 +61,7 @@ MeanData <-aggregate(trace_Stoch[, -which(colnames(trace_Stoch) %in% c("Time","I
 DatiPlotlist_Stoch<- lapply(1:length(Entities),function(i){
   place<-Entities[i]
   
+  
   sub_dati=trace_Stoch[,c("Time",place)]
   
   dt=data.frame(sub_dati,ID=trace_Stoch$patient,SimID=trace_Stoch$Id,Ent=place)
@@ -134,5 +135,10 @@ pl1<-Plotgeneration(DataFrame = DatiPlot, Stoch = TRUE, Mean=Mean, Entities=SubE
 pl2<-Plotgeneration(DataFrame = DatiPlot_Det, Stoch = FALSE, Entities=SubEntities)
 
 ggsave(pl1,filename = paste0("Plot/StochDynamics.pdf"),device = "pdf",width = 10, height = 20 )
-ggsave(pl2,filename = paste0("Plot/DetermDynamics.pdf"),device = "pdf",width = 12, height =12 )
+ggsave(pl2,filename = paste0("Plot/DetermDynamics.pdf"),device = "pdf",width = 15, height =15 )
 
+pl<-Plotgeneration(DataFrame = DatiPlot_Det, Stoch = FALSE, Mean=Mean, Entities=Entities)
+ggsave(pl,filename = paste0("Plot/DetermDynamicsALL.pdf"),device = "pdf",width = 15, height = 15 )
+
+pl<-Plotgeneration(DataFrame = DatiPlot, Stoch = TRUE, Mean=Mean, Entities=Entities)
+ggsave(pl,filename = paste0("Plot/StochDynamicsALL.pdf"),device = "pdf",width = 10, height = 20 )

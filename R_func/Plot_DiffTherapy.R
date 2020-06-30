@@ -3,10 +3,12 @@ library(cowplot)
 
 dirs<- list.dirs()
 folders <- grep("Therapy_*", dirs, value = TRUE)
-namesFol <- c(rep("Early therapy",12 ),rep("Late therapy",12 ),rep("No therapy",2) )
+#namesFol <- c( rep("Early therapy",12 ),rep("Late therapy",12 ),"No therapy","No therapy" )
+namesFol <- c( rep("Early therapy",10 ),rep("Late therapy",10 ),"No therapy","No therapy" )
+
 traceAll =  lapply( 1:length(folders), function(i)
 {
-  p <- readRDS(paste0("./",folders[i],"/params_Rete_SM_newAM_SR_Laura-analysys.RDS") )
+  p <- readRDS(paste0("./",folders[i],"/params_MS_Model-analysys.RDS") )
   filesAll <- list.files(paste0("./",folders[i],"/"),pattern='*.trace')
  
   traceAll <- lapply(filesAll, function(x,param=p, ind = i) {
@@ -15,8 +17,8 @@ traceAll =  lapply( 1:length(folders), function(i)
     param$event.list[[length(param$event.list)]][[2]]["DAC"] -> qDAC
     
     if(folders[ind] == "./Therapy_Healthy0") data.frame(read.csv(paste0('./',folders[ind],'/',x), sep="") ,ID= paste("Healthy" ), Therapy = namesFol[ind], DACq = "Healthy",rate = "Healthy" )
-    else if(folders[ind] == "./Therapy_r0_DAC0") data.frame(read.csv(paste0('./',folders[ind],'/',x), sep="") ,ID= paste("MS"), Therapy = namesFol[ind], DACq = "MS",rate = "MS" )
-      else data.frame(read.csv(paste0('./',folders[ind],'/',x), sep="") ,ID= paste("rate",rate,"; DAC",qDAC ), Therapy = namesFol[ind], DACq = paste(qDAC),rate =paste(rate) )
+    else if(folders[ind] == "./Therapy_MS") data.frame(read.csv(paste0('./',folders[ind],'/',x), sep="") ,ID= paste("MS"), Therapy = namesFol[ind], DACq = "MS",rate = "MS" )
+      else data.frame(read.csv(paste0('./',folders[ind],'/',x), sep="") ,ID= paste("D-P",rate,"; DAC",qDAC ), Therapy = namesFol[ind], DACq = paste(qDAC),rate =paste(rate) )
     
   } )
   
@@ -35,9 +37,9 @@ trace$SimID = rep(1:nsim,each = length(time))
 
 #trace = trace[which(trace$ID %in% c(min(DACKill),max(DACKill))),]
 
-Entities = c("Antigen" , "DAC" ,"Teff_out","INFg_out", "IL17_out","Treg_out",
+Entities = c("Antigen" , "DAC" ,"Teff_out","IFNg_out", "IL17_out","Treg_out",
              "IL10_out","NK_out","BBB",
-               "Teff_in" ,"INFg_in",
+               "Teff_in" ,"IFNg_in",
               "IL17_in","Treg_in","IL10_in","ODC_le1")
 
 dataCreation <- function(trace){
@@ -67,12 +69,19 @@ ubPlot <- dataCreation(ub)
 lbPlot <- dataCreation(lb)
 
 MeanArea<-data.frame(mean=MeanPlot,ub=ubPlot$Value,lb=lbPlot$Value)
-MeanArea$mean.DACq = factor(MeanArea$mean.DACq, levels = c("Healthy","MS","50","100","200","400","600","800"))
+# MeanArea$mean.DACq = factor(MeanArea$mean.DACq, levels = c("Healthy","MS","50","100","200","400","600","800"))
+# MeanArea$mean.ID = factor(MeanArea$mean.ID, levels = c("Healthy","MS",
+#                                                        "rate 0.015 ; DAC 50" , "rate 0.015 ; DAC 100","rate 0.015 ; DAC 200","rate 0.015 ; DAC 400",
+#                                                        "rate 0.015 ; DAC 600" ,"rate 0.015 ; DAC 800",
+#                                                        "rate 0.025 ; DAC 50", "rate 0.025 ; DAC 100", "rate 0.025 ; DAC 200", "rate 0.025 ; DAC 400",
+#                                                        "rate 0.025 ; DAC 600" , "rate 0.025 ; DAC 800" ))
+MeanArea$mean.DACq = factor(MeanArea$mean.DACq, levels = c("Healthy","MS","1000","2000","5000","10000","15000"))
 MeanArea$mean.ID = factor(MeanArea$mean.ID, levels = c("Healthy","MS",
-                                                       "rate 0.015 ; DAC 50" , "rate 0.015 ; DAC 100","rate 0.015 ; DAC 200","rate 0.015 ; DAC 400",
-                                                       "rate 0.015 ; DAC 600" ,"rate 0.015 ; DAC 800",
-                                                       "rate 0.025 ; DAC 50", "rate 0.025 ; DAC 100", "rate 0.025 ; DAC 200", "rate 0.025 ; DAC 400",
-                                                       "rate 0.025 ; DAC 600" , "rate 0.025 ; DAC 800" ))
+                                                       "D-P 0.01 ; DAC 1000" , "D-P 0.01 ; DAC 2000","D-P 0.01 ; DAC 5000",
+                                                       "D-P 0.01 ; DAC 10000" , "D-P 0.01 ; DAC 15000",
+                                                       "D-P 0.03 ; DAC 1000", "D-P 0.03 ; DAC 2000", "D-P 0.03 ; DAC 5000",
+                                                       "D-P 0.03 ; DAC 10000","D-P 0.03 ; DAC 15000"))
+
 
 LateMeanArea = MeanArea[which(MeanArea$mean.Therapy != "Early therapy" ),]
 EarlyMeanArea = MeanArea[which(MeanArea$mean.Therapy != "Late therapy" ),]
@@ -94,7 +103,11 @@ plE=ggplot(EarlyMeanArea,aes(x=mean.Time/24))+
         legend.key.width = unit(.9,"cm"),
         panel.background = element_rect(colour = NA),
         plot.background = element_rect(colour = NA),
-        plot.margin=unit(c(0,5,5,5),"mm") )
+        plot.margin=unit(c(0,5,5,5),"mm"),
+        strip.background = element_rect(
+          color="black", size=1.5, linetype="solid"
+        ))+ 
+  guides(colour = guide_legend(nrow = 1),fill = guide_legend(nrow = 1))
 
 plL=ggplot(LateMeanArea,aes(x=mean.Time/24))+
   geom_ribbon(aes(ymin=lb,ymax=ub,fill= mean.DACq ),color="grey70",alpha=0.2)+
@@ -113,69 +126,43 @@ plL=ggplot(LateMeanArea,aes(x=mean.Time/24))+
         legend.key.width = unit(.9,"cm"),
         panel.background = element_rect(colour = NA),
         plot.background = element_rect(colour = NA),
-        plot.margin=unit(c(0,5,5,5),"mm") )
+        plot.margin=unit(c(0,5,5,5),"mm"),
+        strip.background = element_rect(
+          color="black", size=1, linetype="solid"
+        ))+ 
+  guides(colour = guide_legend(nrow = 1),fill = guide_legend(nrow = 1))
 
-SubMeanArea = DatiPlot[which(DatiPlot$Entity == "ODC_le1" & DatiPlot$Time == max(DatiPlot$Time) ),]
-SubMeanArea$DACq = factor(SubMeanArea$DACq, levels = c("Healthy","MS","50","100","200","400","600","800"))
-SubMeanArea$Therapy = factor(SubMeanArea$Therapy, levels = c("No therapy","Early therapy","Late therapy"))
 
-MeanAntigene = MeanArea[which(MeanArea$mean.Entity == "Antigen"),]
+source('~/Multiple-Sclerosis/R_func/Plot_boxplot.R')
 
-colnames(MeanAntigene) = c(colnames(SubMeanArea), "ub","lb")
+#boxplot.generation(max(DatiPlot$Time) )
+#boxplot.generation( 130*24 )
+#boxplot.generation( 310*24 )
 
-pl3<-ggplot()+
-  geom_boxplot(data = SubMeanArea, aes(y=Value, x=DACq, fill = rate  ))+
-  geom_violin(data = SubMeanArea, aes(y=Value, x=DACq, fill = rate, col=DACq  ),alpha = .4)+
-  facet_wrap(Entity~ Therapy, scales = "free")+
-  theme(axis.text=element_text(size = 15, hjust = 0.5),
-        axis.text.x=element_text(angle=+90,vjust=0.5, hjust=1),
-        axis.title=element_text(size=18,face="bold"),
-        axis.line = element_line(colour="black"),
-        plot.title=element_text(size=20, face="bold", vjust=1, lineheight=0.6),
-        legend.title = element_blank(),
-        legend.text=element_text(size=14),
-        legend.position="top",
-        legend.key=element_blank(),
-        legend.key.size = unit(.9, "cm"),
-        legend.key.width = unit(.9,"cm"),
-        panel.background = element_rect(colour = NA),
-        plot.background = element_rect(colour = NA),
-        plot.margin=unit(c(0,5,5,5),"mm") )+
-  geom_line(data = MeanAntigene, aes(x=Time, y=Value, col= DACq,group = ID) )
+# ggplot(MeanArea[which(MeanArea$mean.Entity == "Antigen" ),],aes(x=mean.Time/24))+
+#   geom_line(aes(y=mean.Value, color = mean.D-P, linetype = mean.DACq ))+
+#   theme(axis.text=element_text(size = 15, hjust = 0.5),
+#         axis.text.x=element_text(angle=+90,vjust=0.5, hjust=1),
+#         axis.title=element_text(size=18,face="bold"),
+#         axis.line = element_line(colour="black"),
+#         plot.title=element_text(size=20, face="bold", vjust=1, lineheight=0.6),
+#         legend.title = element_blank(),
+#         legend.text=element_text(size=14),
+#         legend.position="top",
+#         legend.key=element_blank(),
+#         legend.key.size = unit(.9, "cm"),
+#         legend.key.width = unit(.9,"cm"),
+#         panel.background = element_rect(colour = NA),
+#         plot.background = element_rect(colour = NA),
+#         plot.margin=unit(c(0,5,5,5),"mm"),
+#         strip.background = element_rect(
+#           color="black", size=1, linetype="solid"
+#         ))+ 
+#   guides(colour = guide_legend(nrow = 1),fill = guide_legend(nrow = 1))
 
-    
-
-#SubMeanArea = DatiPlot[which(DatiPlot$Entity == "ODC_le1" & DatiPlot$Time == max(DatiPlot$Time) ),]
-
-SubMeanArea = DatiPlot[which(DatiPlot$Entity == "ODC_le1" & DatiPlot$Time == 130*24 ),]
-SubMeanArea$DACq = factor(SubMeanArea$DACq, levels = c("Healthy","MS","50","100","200","400","600","800"))
-SubMeanArea$Therapy = factor(SubMeanArea$Therapy, levels = c("No therapy","Early therapy","Late therapy"))
-
-pl2
-
-ggplot(SubMeanArea)+
-  geom_boxplot(aes(y=Value, x=DACq, fill = rate  ))+
-  geom_violin(aes(y=Value, x=DACq, fill = rate  ),alpha = .2)+
-  facet_wrap(~ Therapy, scales = "free_x")+
-  theme(axis.text=element_text(size = 15, hjust = 0.5),
-        axis.text.x=element_text(angle=+90,vjust=0.5, hjust=1),
-        axis.title=element_text(size=18,face="bold"),
-        axis.line = element_line(colour="black"),
-        plot.title=element_text(size=20, face="bold", vjust=1, lineheight=0.6),
-        legend.title = element_blank(),
-        legend.text=element_text(size=14),
-        legend.position="top",
-        legend.key=element_blank(),
-        legend.key.size = unit(.9, "cm"),
-        legend.key.width = unit(.9,"cm"),
-        panel.background = element_rect(colour = NA),
-        plot.background = element_rect(colour = NA),
-        plot.margin=unit(c(0,5,5,5),"mm") )
 
 
 
 ggsave(plE,filename = paste0("Plot/DiffEarlyTherapy.pdf"),device = "pdf",width = 20, height = 20 )
 ggsave(plL,filename = paste0("Plot/DiffLateTherapy.pdf"),device = "pdf",width = 20, height = 20 )
-ggsave(pl2,filename = paste0("Plot/DiffTherapyB.pdf"),device = "pdf",width = 16, height = 10 )
-ggsave(pl3,filename = paste0("Plot/DiffTherapyCAOS.pdf"),device = "pdf",width = 16, height = 10 )
 

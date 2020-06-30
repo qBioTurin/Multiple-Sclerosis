@@ -3,19 +3,19 @@ library(ggplot2)
 library(ggthemes)
 
 #trace <-read.csv('./results_model_calibration/Rete_SM_newAM_SR_Laura-calibration-22340.trace', sep="")
-traceH <-data.frame(read.csv('./Healthy_model_analysis/Rete_SM_newAM_SR_Laura-analysys-1.trace', sep=""), patient = "Healthy")
+traceH <-data.frame(read.csv('./Healthy_model_analysis/MS_Model-analysys-1.trace', sep=""), patient = "Healthy")
 if(file.exists("MS_model_analysis"))
 {
-  traceS <-data.frame(read.csv('./MS_model_analysis/Rete_SM_newAM_SR_Laura-analysys-1.trace', sep=""), patient = "MS")
+  traceS <-data.frame(read.csv('./MS_model_analysis/MS_Model-analysys-1.trace', sep=""), patient = "MS")
   trace <-rbind(traceH,traceS)
 }else{trace <- traceH}
 
 
 Entities = c("Teff_out","Treg_out","Antigen" ,
              "EffectorMemory","NK_out","BBB",
-             "IL10_out","IL17_out","INFg_out", 
+             "IL10_out","IL17_out","IFNg_out", 
              "Treg_in", "Teff_in","ODC_le1" ,
-             "IL17_in","INFg_in","IL10_in")
+             "IL17_in","IFNg_in","IL10_in")
 
 
 
@@ -65,7 +65,7 @@ ggsave(pl,filename = "Plot/Dynamics.pdf",device = "pdf",width = 16, height = 20 
 DataExcel <- read_table2("input/DataExcel.csv")
 
 ref <-lapply(2:(length(DataExcel[1,])), function(i){
-  if(names(DataExcel[,i]) %in% c("INFg_out", "IL17_out" ,"IL10_out", "Teff_out","Treg_out") ) t = 2+18/24
+  if(names(DataExcel[,i]) %in% c("IFNg_out", "IL17_out" ,"IL10_out", "Teff_out","Treg_out") ) t = 2+18/24
   else t = 4+18/24
   a<- data.frame(DataExcel[,c(1,i)], Entity = names(DataExcel[,i]), time = t )
   colnames(a) <- c("ID", "ref" ,"Entity","Time")

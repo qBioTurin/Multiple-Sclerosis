@@ -1,8 +1,8 @@
 library(epimod)
 
 #### Solver generation:
-# model_generation(net_fname = "Net/MS_Model.PNPRO",
-#                  functions_fname = "cpp/transition.cpp")
+model_generation(net_fname = "Net/MS_Model.PNPRO",
+                  functions_fname = "cpp/transition.cpp")
 
 
 source("R_func/InjectionSetup.R")

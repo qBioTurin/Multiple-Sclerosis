@@ -21,6 +21,11 @@ if(Multy)
   
 }
 
+# traceH <-data.frame(read.csv('./Therapy_Healthy0/MS_Model-analysys-1.trace', sep=""), patient = "Healthy")
+# traceS <-data.frame(read.csv('./EarlyTherapy_r0_DAC0/MS_Model-analysys-1.trace', sep=""), patient = "MS")
+# trace <-rbind(traceH,traceS)
+
+
 time <- unique(trace$Time)
 nsim <- unique(table(trace$Time))
 if (length(nsim)>1) cat("error")
@@ -65,7 +70,7 @@ DatiPlot<-do.call("rbind", DatiPlotlist)
 Mean <- do.call("rbind", MeanDatalist)
 
 pl<-ggplot()+
-  geom_line(data = DatiPlot,aes(x=Time/24,y=Value,group=SimID,col="Simulations"),alpha=.4)+
+  #geom_line(data = DatiPlot,aes(x=Time/24,y=Value,group=SimID,col="Simulations"),alpha=.4)+
   geom_line(data = Mean,aes(x=Time/24,y=Value,col = ID))+
   facet_grid(Entity ~ ID,scales = "free_y")+
   theme(axis.text=element_text(size = 15, hjust = 0.5),
@@ -84,6 +89,8 @@ pl<-ggplot()+
         plot.margin=unit(c(0,5,5,5),"mm") )+
   geom_point(aes(x=2+18/24, y = ref,col=ID), ref)+
   scale_colour_manual(values = c("Simulations" = "grey" ,"MS"="red","Healthy"="blue"), labels = c("Healthy mean","MS mean","Simulations") )
+
+pl
 
 ggsave(pl,filename = paste0("Plot/",plotnames,".png"),device = "png",width = 8, height = 20 )
 
@@ -104,7 +111,7 @@ ref <- do.call("rbind",ref)
 sub_entity = unique(ref$Entity)
 
 pl1<-ggplot()+
-  geom_line(data = DatiPlot[which(DatiPlot$Entity %in% sub_entity & DatiPlot$Time < 10*24),],aes(x=Time/24,y=Value,group=SimID,col="Simulations"),alpha=.4)+
+  #geom_line(data = DatiPlot[which(DatiPlot$Entity %in% sub_entity & DatiPlot$Time < 10*24),],aes(x=Time/24,y=Value,group=SimID,col="Simulations"),alpha=.4)+
   geom_line(data = Mean[which(Mean$Entity %in% sub_entity & Mean$Time < 10*24 ),],aes(x=Time/24,y=Value,col = ID))+
   geom_violin(data = ref, aes(x = Time, y = ref,fill=ID, col= ID ),alpha=.5)+
   facet_grid(Entity ~ ID,scales = "free")+

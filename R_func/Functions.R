@@ -153,9 +153,8 @@ p=.1
 
 IL10_production<-function(x=NULL, patient)
 {
-	if(patient == "HEALTHY") p = 0.055555555555556
-	else p = 0.055555555555556
-
+	p = 0.055555555555556
+	
   return(matrix(p, ncol = 1))
 }
 
@@ -190,17 +189,14 @@ IL10_production_NK<-function(x=NULL, analysis )
 
 IL17_production<-function(x=NULL, patient)
 {
-	if(patient == "HEALTHY") p = 0.008950617283951
-	else p = 0.009737792505895
+	p = 0.008950617283951
 
   return(matrix(p, ncol = 1))
 }
 
 IFNg_production<-function(x=NULL, patient )
 {
-
-    if(patient == "HEALTHY") p = 0.046604938271605
-	  else p =  0.04581776304966
+  p = 0.046604938271605
 
   return(matrix(p, ncol = 1))
 }

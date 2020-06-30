@@ -5,12 +5,12 @@ events<-InjectionSetting.generation(InjATime=c(2)*24 , numberA = 100)
 #making_the_reference("healthy")
 # 
 
-parmNames<-c('TeE','TrE','Tr2','Te2','TekODC','TrkTe','TekA','Pass_BBB_treg','Pass_BBB_teff','cA','CIL10','Cinf','NKkillsTeff_out','NK_prod_IFNg',
-             'NK_prod_IL10','IL17_BBB','IL10_BBB','Remyelinization_l_le2','IL10Consuption_in','IL17Consuption_in','INFgConsuption_in')
+parmNames<-c('TeE','TrE','Tr2','Te2','TekODC','TrkTe','TekA','Pass_BBB_treg','Pass_BBB_teff','cA','CIL10','Cifn','NKkillsTeff_out','NK_prod_IFNg',
+             'NK_prod_IL10','IL17_BBB','IL10_BBB','Remyelinization_l_le2','IL10Consuption_in','IL17Consuption_in','IFNgConsuption_in')
 init <- unlist(read.csv("./paramHealthy.csv", sep=""))
 names(init)<-parmNames
 
-model_analysis(solver_fname = "Net/Rete_SM_newAM_SR_Laura.solver",
+model_analysis(solver_fname = "Net/MS_Model.solver",
                f_time = 24*30,
                s_time = 24,
                parameters_fname = "input/plistCalib.csv",
@@ -32,7 +32,7 @@ system(paste('mv',
 init <- unlist(read.csv("./paramMS.csv", sep=""))
 names(init)<-parmNames
 
-model_analysis(solver_fname = "Net/Rete_SM_newAM_SR_Laura.solver",
+model_analysis(solver_fname = "Net/MS_Model.solver",
                f_time = 24*30,
                s_time = 24,
                parameters_fname = "input/plistCalib.csv",

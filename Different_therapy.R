@@ -1,7 +1,7 @@
 library(epimod)
 source("R_func/InjectionSetup.R")
-parmNames<-c('TeE','TrE','Tr2','Te2','TekODC','TrkTe','TekA','Pass_BBB_treg','Pass_BBB_teff','cA','CIL10','Cinf','NKkillsTeff_out','NK_prod_IFNg',
-             'NK_prod_IL10','IL17_BBB','IL10_BBB','Remyelinization_l_le2','IL10Consuption_in','IL17Consuption_in','INFgConsuption_in')
+parmNames<-c('TeE','TrE','Tr2','Te2','TekODC','TrkTe','TekA','Pass_BBB_treg','Pass_BBB_teff','cA','CIL10','Cifn','NKkillsTeff_out','NK_prod_IFNg',
+             'NK_prod_IL10','IL17_BBB','IL10_BBB','Remyelinization_l_le2','IL10Consuption_in','IL17Consuption_in','IFNgConsuption_in')
 
 init <- unlist(read.csv("./paramHealthy.csv", sep=""))
 names(init)<-parmNames
@@ -12,7 +12,7 @@ model<-function(r,q, events,Stoch = FALSE, FolderName = NULL){
   init["cA"] <- r
   if(Stoch)
   {
-    model_analysis(solver_fname = "Net/Rete_SM_newAM_SR_Laura.solver",
+    model_analysis(solver_fname = "Net/MS_Model.solver",
                    f_time = 24*30*24,
                    s_time = 24,
                    parameters_fname = "input/plistTherapy.csv",
@@ -20,11 +20,11 @@ model<-function(r,q, events,Stoch = FALSE, FolderName = NULL){
                    ini_v = init,
                    event.list = events, # se lo attivi al secondo giorno fa l'iniezione
                    solver_type = "SSA",
-                   n_run = 500,
+                   n_run = 1000,
                    #taueps = .1,
                    parallel_processors = 20)
   }else{
-     model_analysis(solver_fname = "Net/Rete_SM_newAM_SR_Laura.solver",
+     model_analysis(solver_fname = "Net/MS_Model.solver",
                  f_time = 24*30*24,
                  s_time = 24,
                  parameters_fname = "input/plistTherapy.csv",
@@ -50,34 +50,35 @@ model<-function(r,q, events,Stoch = FALSE, FolderName = NULL){
 ##### Healthy
 eventsNoTherapy<-InjectionSetting.generation(InjATime=c(2,67,127,295,300,303,307,600)*24 , numberA = 100)
 
-model(r = 0,q = 0 , events = eventsNoTherapy,Stoch = Stoch, H = "Therapy_Healthy0")
+model(r = 0,q = 0 , events = eventsNoTherapy,Stoch = Stoch, FolderName = "Therapy_Healthy0")
 
 #### MS
 init <- unlist(read.csv("./paramMS.csv", sep=""))
 names(init)<-parmNames
 
-model(r = 0,q = 0 , events = eventsNoTherapy,Stoch = Stoch)
+model(r = 0,q = 0 , events = eventsNoTherapy,Stoch = Stoch,FolderName = "Therapy_MS")
 
 #### MS with late therapy
 
-result<-lapply(c(50,100,200,400,600,800),function(q){
+#result<-lapply(c(50,100,200,400,600,800),function(q){
+result<-lapply(c(1000,2000,5000,10000,15000),function(q){
   
   eventsTherapy<-InjectionSetting.generation(InjATime=c(2,67,127,295,300,303,307,600)*24 , numberA = 100,
                                              numberDAC = q, InjDACTime = (6:23)*30*24 )
   
-  r1<-lapply(c(0.015 ,0.025), function(r,q1=q, event = eventsTherapy){
+  r1<-lapply(c(0.01 ,0.02, 0.03 ), function(r,q1=q, event = eventsTherapy){
     rete <- model(r,q1,event,Stoch = Stoch,FolderName = "Late")
   })
   
 })
 
 #### MS with early therapy
-result<-lapply(c(50,100,200,400,600,800),function(q){
-  
+#result<-lapply(c(50,100,200,400,600,800),function(q){
+result<-lapply(c(1000,2000,5000,10000,15000),function(q){
   eventsTherapy<-InjectionSetting.generation(InjATime=c(2,67,127,295,300,303,307,600)*24 , numberA = 100,
                                              numberDAC = q, InjDACTime = (1:23)*30*24 )
   
-  r1<-lapply(c(0.015 ,0.025), function(r,q1=q, event = eventsTherapy){
+  r1<-lapply(c(0.01 ,0.02,0.03), function(r,q1=q, event = eventsTherapy){
     rete <- model(r,q1,event,Stoch = Stoch)
   })
   

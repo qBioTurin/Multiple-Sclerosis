@@ -26,12 +26,12 @@ names(init)<-parmNames
 # init["NK_prod_IL10"] <- 0.045
 # init["IL17_BBB"] <- 0.07  
 # init["IL10_BBB"] <- 0.08  
-# init["Remyelinization_l_le2"] <- 0.01035
+init["Remyelinization_l_le2"] <- 0.01
 # init["IL10Consuption_in"] <- 0.09
 # init["IL17Consuption_in"] <- 0.03
 # init["INFgConsuption_in"] <- 0.05 
 
-model_analysis(solver_fname = "Net/Rete_SM_newAM_SR_Laura.solver",
+model_analysis(solver_fname = "Net/MS_Model.solver",
                f_time = 30*24,
                s_time = 1,
                parameters_fname = "input/plistCalib.csv",
@@ -49,11 +49,11 @@ source('./R_func/Plot_modelAnalysis.R')
 
 init <- unlist(read.csv("./paramMS.csv", sep=""))
 names(init)<-parmNames
-
- init["TeE"] <- 0.0175
+# init["Remyelinization_l_le2"] <- 0.01
+# init["TeE"] <- 0.0175
 # init["TrE"] <- 0.00007
 
-model_analysis(solver_fname = "Net/Rete_SM_newAM_SR_Laura.solver",
+model_analysis(solver_fname = "Net/MS_Model.solver",
                f_time = 30*24,
                s_time = 1,
                parameters_fname = "input/plistCalib.csv",
@@ -69,4 +69,4 @@ system(paste('mv',
 
 source('./R_func/Plot_modelAnalysis.R')
 
-#write.table(t(init),file = "paramMS.csv",row.names = FALSE,quote = F)
+write.table(t(init),file = "paramMS.csv",row.names = FALSE,quote = F)

@@ -1,5 +1,3 @@
-|1 
-FN:TregActivation
 |2 
 FN:Killing
 |3 
@@ -10,8 +8,6 @@ FN:KillingODC
 FN:KillingODC
 |6 
 FN:KillingODC
-|10 
-FN:TregDup
 |11 
 FN:TeffActivation
 |13 
@@ -26,12 +22,8 @@ FN:NKBorn
 FN:TeffDup
 |24 
 FN:TeffDup
-|25 
-FN:TregDup
 |33 
 FN:Killing
-|36 
-FN:TregActivation
 |37 
 FN:TeffActivation
 |38 

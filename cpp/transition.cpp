@@ -2,7 +2,6 @@
 #include <cstring>
 
 // Rate
-static double Tr2;
 static double TeE;
 static double Te2;
 static double TrE;
@@ -77,8 +76,6 @@ void init_data_structures( map <string,int>& NumPlaces)
 
   // rates reading
   read_double("./TeE",TeE);
-  read_double("./TrE",TrE);
-  read_double("./Tr2",Tr2);
   read_double("./Te2",Te2);
   read_double("./TekODC",TeffKillsODC);
   read_double("./TrkTe",TregKillsTeff);
@@ -173,29 +170,6 @@ vector<int>& InputPlacesOrderedAlphabetically(TransPL& trans_InputPlaces_ordered
 
 // general transitions:
 
-double TregDup(double *Value,  map <string,int>& NumTrans,  map <string,int>& NumPlaces, const vector<string> & NameTrans, const struct InfTr* Trans, const int T, const double& time)
-{
-
-  if( populate_data_structures )
-    init_data_structures(NumPlaces);
-
-  double rate=0.0;
-  vector<int> idx; // idx will store the input places indexes ordered alphabetically!! It is necessary to check if the transition is characterized by the right input places!!
-  // For istance in this case I need to have in input the following places: DAC and Treg. If I am in the grid position xyz, than the input/output arcs must have the ight instances, this means that I can not have a wrong color instance otherwise the input places considered in the general functions could be wrong!!
-
-  idx = InputPlacesOrderedAlphabetically(trans_InputPlaces_ordered, NumPlaces, Trans, T, NumTrans );
-  double Treg=0.0 ;
-  int idxTREG = idx.at(0);
-  Treg = Value[idxTREG];
-
-  rate =  Tr2 * Treg ;
-
-  if(rate <= 0.0 ) rate =  0.000000000001;
-  //cout << "Time: " << time << " ; rate: " << rate << "; transition: " << NameTrans[T] <<"\n"<< endl;
-  return rate;
-
-}
-
 double TeffDup(double *Value,  map <string,int>& NumTrans,  map <string,int>& NumPlaces, const vector<string> & NameTrans, const struct InfTr* Trans, const int T, const double& time)
 {
 
@@ -217,6 +191,7 @@ double TeffDup(double *Value,  map <string,int>& NumTrans,  map <string,int>& Nu
  rate = Te2 * Teff;
 
  if( p*rate <= 0.0 ) rate =  0.000000000001;
+ 
  return p*rate;
 
 }
@@ -281,41 +256,6 @@ double TeffActivation(double *Value,  map <string,int>& NumTrans,  map <string,i
  if(rate <= 0.0 ) rate =  0.000000000001;
 //cout<< "T: " <<  NameTrans[T] << "; RestingTeff: " << RestingTeff<<"; A: " << A << "; IFNg: "<< (0.5 + exp(-IFNg/Cifn) ) << "; TeE: "<<TeE<<"\n"<<endl;
 //cout << "Time: " << time << " ; rate: " << rate << "; transition: " << NameTrans[T] <<"\n"<< endl;
-  return rate;
-}
-
-double TregActivation(double *Value,  map <string,int>& NumTrans,  map <string,int>& NumPlaces, const vector<string> & NameTrans, const struct InfTr* Trans, const int T, const double& time)
-{
-  if( populate_data_structures )
-    init_data_structures(NumPlaces);
-  
-  double rate = 0.0;
-  double RestingTreg = 0.0 ;
-  double Teff = 0.0;
-
-  if ( NameTrans[T] == "TregActivation_out" )
-  {
-    int idxRestingTreg = NumPlaces.find("Resting_Treg_out") -> second ;
-    int idxTeff = NumPlaces.find("Teff_out") -> second ;
-
-    RestingTreg = Value[idxRestingTreg];
-    Teff = Value[idxTeff];
-  } 
-  else
-  {
-    int idxRestingTreg = NumPlaces.find("Resting_Treg_in") -> second ;
-    int idxTeff = NumPlaces.find("Teff_in") -> second ;
-
-    RestingTreg = Value[idxRestingTreg];
-    Teff = Value[idxTeff];
-}
-  //rate = TrE * ( (Teff )/(Teff + A+ 1) ) * RestingTreg;
-  //rate =  Teff * RestingTreg * exp(-A/cA)  ;
- // rate = TrE *RestingTreg * Teff * exp(-A/cA)  ;
-  rate = TrE *RestingTreg * Teff;
-  
-  if(rate <= 0.0 ) rate =  0.000000000001;
-  //cout <<  NameTrans[T] << ": RestingTreg " << RestingTreg <<"; Teff " << Teff <<"; exp(-A/cA) " << exp(-A/cA) <<"\n"<< endl;
   return rate;
 }
 
@@ -389,7 +329,7 @@ double Killing(double *Value, map <string,int>& NumTrans, map <string,int>& NumP
   	int idxTeff = idx.at(1);
   	int idxTreg = idx.at(2);
 
-  	intensity = Value[idxTreg] * Value[idxTeff] * (1 - exp(-Value[idxIL10]/cIL10) );
+  	intensity = Value[idxTreg] * Value[idxTeff] * (1 - exp(-Value[idxIL10]/cIL10));
 
   	}else{
   		std::cerr<<"\n no killling transition selected \n";

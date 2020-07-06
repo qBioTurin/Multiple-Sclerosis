@@ -1,8 +1,8 @@
 library(epimod)
 
 #### Solver generation:
-model_generation(net_fname = "Net/MS_Model.PNPRO",
-                  functions_fname = "cpp/transition.cpp")
+# model_generation(net_fname = "Net/MS_Model.PNPRO",
+#                 functions_fname = "cpp/transition.cpp")
 
 
 source("R_func/InjectionSetup.R")
@@ -12,7 +12,7 @@ parmNames<-c('TeE','TrE','Tr2','Te2','TekODC','TrkTe','TekA','Pass_BBB_treg','Pa
 
 ##### HEALTHY case:
 
-init <- unlist(read.csv("./paramHealthy.csv", sep=""))
+init <- unlist(read.csv("./input/paramHealthy.csv", sep=""))
 names(init)<-parmNames
 
 ## Deterministic:
@@ -41,7 +41,7 @@ model_analysis(solver_fname = "Net/MS_Model.solver",
                event.list = events,
                n_run = 1000,
                solver_type = "SSA",
-               parallel_processors = 20)
+               parallel_processors = 2)
 
 
 if(file.exists("Healthy_Stoch_analysis")) system(paste('rm -dr', sprintf("Healthy_Stoch_analysis")) )
@@ -51,7 +51,7 @@ system(paste('mv',
 
 ##### MS case:
 
-init <- unlist(read.csv("./paramMS.csv", sep=""))
+init <- unlist(read.csv("./input/paramMS.csv", sep=""))
 names(init)<-parmNames
 
 ## Deterministic:
@@ -80,7 +80,7 @@ model_analysis(solver_fname = "Net/MS_Model.solver",
                event.list = events,
                n_run = 1000,
                solver_type = "SSA",
-               parallel_processors = 20)
+               parallel_processors = 2)
 
 if(file.exists("MS_Stoch_analysis")) system(paste('rm -dr', sprintf("MS_Stoch_analysis")) )
 system(paste('mv',

@@ -5,7 +5,7 @@
       <place label-x="2.0" label-y="-1.0" name="Teff_in" x="68.0" y="82.0"/>
       <place label-x="2.0" label-y="-2.0" magnets="NSEW_SQUARE_POINTS" name="Treg_in" x="41.0" y="82.0"/>
       <place domain="Mie" label-y="-2.0" marking="1000&lt;Lmax&gt;" name="ODC" x="78.0" y="75.0"/>
-      <transition delay="FN:TregActivation" guard-x="5.0" guard-y="1.0" label-x="-4.5" label-y="1.0" name="TregActivation_out" type="GEN" x="41.55" y="40.0"/>
+      <transition delay="TregActivation" guard-x="5.0" guard-y="1.0" label-x="-4.5" label-y="1.0" name="TregActivation_out" nservers-x="0.5" type="EXP" x="41.55" y="40.0"/>
       <transition delay="FN:Killing" guard-y="2.0" label-x="0.5" label-y="-2.0" magnets="NSEW_SQUARE_POINTS" name="TregKillsTeff_in" rotation="-0.0" type="GEN" x="48.55" y="82.0"/>
       <transition delay="FN:KillingODC" guard="l !in Lmax" guard-x="2.5" guard-y="2.0" label-x="3.5" label-y="-2.0" name="TeffKillsODC" rotation="3.141592653589793" type="GEN" x="78.55" y="82.0"/>
       <text-box bold="true" border-color="#000000" fill-color="none" height="26.24375" locked="true" name="__textBox0" shadow="true" shape="ROUND_RECTANGLE" text-color="#000000" width="26.5" x="122.75" y="32.878125">Rates definition:</text-box>
@@ -16,7 +16,7 @@
       <transition delay="rec" guard="l !in Lmin &amp;&amp; l !in Lmax" guard-x="4.5" guard-y="0.0" label-x="4.5" label-y="-1.0" name="Remyelinization" nservers-x="0.5" rotation="-0.0" type="EXP" x="88.55" y="75.0"/>
       <color-class definition="circular le{1..1} is Lmin + le{2..2} is L2 + le{3..3} is L3+ le{4..4} is L4 + le{5..5} is Lmax" name="Mie" x="123.5625" y="13.0"/>
       <color-var domain="Mie" name="l" x="123.4375" y="15.0"/>
-      <transition delay="FN:TregDup" guard-y="3.0" label-y="2.0" magnets="NSEW_SQUARE_POINTS" name="TregDup_in" rotation="-0.0" type="GEN" x="37.55" y="87.0"/>
+      <transition delay="TregDup" guard-y="3.0" label-y="2.0" magnets="NSEW_SQUARE_POINTS" name="TregDup_in" nservers-x="0.5" rotation="-0.0" type="EXP" x="37.55" y="87.0"/>
       <transition delay="FN:TeffActivation" guard-x="-4.0" guard-y="1.0" label-x="4.5" label-y="1.5" magnets="NSEW_SQUARE_POINTS" name="TeffActivation_out" rotation="-0.0" type="GEN" x="68.55" y="40.0"/>
       <constant alt-name-fn="LATEX_TEXT" consttype="REAL" name="NKD" shown-as="\mathrm{NKDeath}" value="0.0416667" x="123.9375" y="49.0"/>
       <place label-x="4.0" label-y="-1.5" magnets="NSEW_SQUARE_POINTS" name="Resting_Teff_out" x="68.0" y="35.0"/>
@@ -45,7 +45,7 @@
       <transition delay="FN:NKBorn" guard-y="2.0" name="NKentry" rotation="-0.0" type="GEN" x="97.55" y="37.0"/>
       <transition delay="FN:TeffDup" guard-y="3.0" label-x="5.5" label-y="0.0" name="TeffDup_Asym_out" rotation="4.71238898038469" type="GEN" x="49.55" y="38.0"/>
       <transition delay="FN:TeffDup" guard-y="3.0" label-y="1.0" name="TeffDup_Sym_out" rotation="4.71238898038469" type="GEN" x="74.55" y="51.0"/>
-      <transition delay="FN:TregDup" delay-x="1.0" guard-y="3.0" label-x="-2.5" label-y="1.0" name="TregDup_out" rotation="4.71238898038469" type="GEN" x="37.55" y="51.0"/>
+      <transition delay="TregDup" delay-x="1.0" guard-y="3.0" label-x="-2.5" label-y="1.0" name="TregDup_out" nservers-x="0.5" rotation="4.71238898038469" type="EXP" x="37.55" y="51.0"/>
       <transition delay="TrD" magnets="NSEW_POINTS" name="Treg_death" nservers-x="0.5" type="EXP" x="32.55" y="46.0"/>
       <transition delay="TeD" label-y="1.5" magnets="NSEW_SQUARE_POINTS" name="Teff_death" nservers-x="0.5" rotation="6.283185307179586" type="EXP" x="75.55" y="46.0"/>
       <transition delay="TrD" magnets="NSEW_SQUARE_POINTS" name="Treg_to_NLT" nservers-x="0.5" type="EXP" x="36.55" y="82.0"/>
@@ -69,7 +69,7 @@
       <constant alt-name-fn="LATEX_TEXT" consttype="REAL" name="IL17onBBB" shown-as="\mathrm{IL17onBBB}" value="0.10" x="136.25" y="42.0"/>
       <place label-x="-4.5" label-y="0.0" name="Resting_Treg_in" x="41.0" y="70.0"/>
       <place label-x="-4.5" label-y="0.0" name="Resting_Teff_in" x="68.0" y="70.0"/>
-      <transition delay="FN:TregActivation" guard-x="5.0" guard-y="1.0" label-x="-4.5" name="TregActivation_in" rotation="4.71238898038469" type="GEN" x="41.55" y="75.0"/>
+      <transition delay="TregActivation" guard-x="5.0" guard-y="1.0" label-x="-4.5" name="TregActivation_in" nservers-x="0.5" rotation="4.71238898038469" type="EXP" x="41.55" y="75.0"/>
       <transition delay="FN:TeffActivation" guard-x="-4.0" guard-y="1.0" label-x="-4.0" name="TeffActivation_in" rotation="4.71238898038469" type="GEN" x="68.55" y="75.0"/>
       <constant alt-name-fn="LATEX_TEXT" consttype="REAL" name="NK2" shown-as="\mathrm{NKdup}" value="0.0416667" x="123.875" y="44.0"/>
       <place label-y="-2.0" name="IL10_out" x="36.0" y="6.0"/>
@@ -103,6 +103,8 @@
       <text-box bold="true" border-color="#00103f" fill-color="#f3f6ff" height="12.0" horiz-pos="4" name="copy___textBox7" shadow="true" shape="ROUND_RECTANGLE" text-color="#000000" text-size="HEADER1" vert-pos="3" width="24.0" x="75.5" y="72.0">ODC</text-box>
       <constant consttype="REAL" name="Pass_BBB_Treg" value="0" x="137.375" y="53.0"/>
       <constant consttype="REAL" name="Pass_BBB_Teff" value="0" x="137.25" y="54.0"/>
+      <constant consttype="REAL" name="TregDup" value="0.0416667" x="124.875" y="45.0"/>
+      <constant consttype="REAL" name="TregActivation" value=" 0" x="137.8125" y="48.0"/>
     </nodes>
     <edges>
       <arc head="Treg_out" kind="OUTPUT" mult-k="0.5288085937499999" mult-x="1.4993164062499993" mult-y="-0.22275390624999858" tail="TregActivation_out">
